@@ -27,7 +27,7 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
     sqGradlePluginVersionChoice: 'specify'
-    sonarQubeGradlePluginVersion: '2.6.1'
+    sonarQubeGradlePluginVersion: '3.3'
     spotBugsAnalysis: false
     javaHomeOption: 'JDKVersion'
     sonarQubeRunAnalysis: false
