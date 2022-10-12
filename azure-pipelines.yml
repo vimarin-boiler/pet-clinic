@@ -16,15 +16,15 @@ steps:
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloudUsach'
-    organization: 'vimarin-devsecops'
+    organization: 'vimarin-boiler-usach'
     scannerMode: 'MSBuild'
-    projectKey: 'DevSecOps-USACH-v2_pet-clinic'
-    projectName: 'pet-clinic'
+    projectKey: 'vimarin-boiler_pet-clinic'
+    projectName: 'vimarin-boiler-usach'
 
 - task: Gradle@3
   inputs:
     gradleWrapperFile: 'gradlew'
-    tasks: 'Sonarqube'
+    tasks: 'sonarqube'
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
     sqGradlePluginVersionChoice: 'specify'
