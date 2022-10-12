@@ -31,3 +31,9 @@ steps:
     spotBugsAnalysis: false
     javaHomeOption: 'JDKVersion'
     sonarQubeRunAnalysis: false
+
+- task: dependency-check-build-task@6
+  inputs:
+    projectName: 'pet-clinic'
+    scanPath: '$(Build.Sources.Directory)/build/libs'
+    format: 'HTML'
