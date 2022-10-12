@@ -16,7 +16,8 @@ steps:
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloudUsach'
-    organization: 'devsecops-usach-v2'
+    organization: 'vimarin-devsecops'
+    scannerMode: 'MSBuild'
     projectKey: 'DevSecOps-USACH-v2_pet-clinic'
     projectName: 'pet-clinic'
 
