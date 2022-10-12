@@ -23,7 +23,7 @@ steps:
 - task: Gradle@3
   inputs:
     gradleWrapperFile: 'gradlew'
-    tasks: 'SonarCloudUsach'
+    tasks: 'sonarqube'
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
     sqGradlePluginVersionChoice: 'specify'
