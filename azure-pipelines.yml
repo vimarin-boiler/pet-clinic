@@ -54,7 +54,7 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'Docker'
-    repository: 'clagosu/pet-clinic'
+    repository: 'vimarin/pet-clinic'
     command: 'build'
     Dockerfile: '**/Dockerfile'
     tags: 'latest'
@@ -63,11 +63,11 @@ steps:
     sudo apt-get install -y rpm
     wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
     sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
-    trivy image clagosu/pet-clinic:latest
+    trivy image vimarin/pet-clinic:latest
   displayName: Image Scan
 - task: Docker@2
   inputs:
     containerRegistry: 'Docker'
-    repository: 'clagosu/pet-clinic'
+    repository: 'vimarin/pet-clinic'
     command: 'push'
     tags: 'latest'
