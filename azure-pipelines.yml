@@ -1,0 +1,73 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: Gradle@3
+  inputs:
+    gradleWrapperFile: 'gradlew'
+    tasks: 'build'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    sonarQubeRunAnalysis: false
+    spotBugsAnalysis: false
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloudUsach'
+    organization: 'vimarin-boiler-usach'
+    scannerMode: 'MSBuild'
+    projectKey: 'vimarin-boiler_pet-clinic'
+    projectName: 'vimarin-boiler-usach'
+
+- task: Gradle@3
+  inputs:
+    gradleWrapperFile: 'gradlew'
+    tasks: 'sonarqube'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    sonarQubeRunAnalysis: true
+    sqGradlePluginVersionChoice: 'specify'
+    sonarQubeGradlePluginVersion: '3.3'
+    spotBugsAnalysis: false
+
+- task: dependency-check-build-task@6
+  inputs:
+    projectName: 'pet-clinic'
+    scanPath: '$(Build.SourcesDirectory)/build/libs'
+    format: 'HTML'
+
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '17.09.0-ce'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker'
+    command: 'login'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker'
+    repository: 'vimarin/pet-clinic'
+    command: 'build'
+    Dockerfile: '**/Dockerfile'
+    tags: 'latest'
+
+- script: | 
+    sudo apt-get install -y rpm
+    wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
+    sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
+    trivy image vimarin/pet-clinic:latest
+  displayName: Image Scan
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker'
+    repository: 'vimarin/pet-clinic'
+    command: 'push'
+    tags: 'latest'
